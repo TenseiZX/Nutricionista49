@@ -16,6 +16,20 @@ public class Dieta {
     public Dieta() {
     }
 
+    public Dieta(int idDieta, String nombre, LocalDate fechaInicial, LocalDate fechaFinal, double pesoInicial, double pesoFinal, boolean estado) {
+        this.idDieta = idDieta;
+        this.nombre = nombre;
+        this.fechaInicial = fechaInicial;
+        this.fechaFinal = fechaFinal;
+        this.pesoInicial = pesoInicial;
+        this.pesoFinal = pesoFinal;
+        this.estado = estado;
+    }
+    
+    
+    
+    
+
     public Dieta(Paciente paciente, String nombre, LocalDate fechaInicial, LocalDate fechaFinal, double pesoInicial, double pesoFinal, boolean estado) {
         this.paciente = paciente;
         this.nombre = nombre;
@@ -99,6 +113,11 @@ public class Dieta {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 
     

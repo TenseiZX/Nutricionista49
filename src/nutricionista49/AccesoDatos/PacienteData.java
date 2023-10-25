@@ -32,6 +32,7 @@ public class PacienteData {
     
     
     public void guardarPaciente(Paciente paciente){
+        
     String sql= "INSERT INTO paciente(dni,apellido,nombre,domicilio,telefono,estado)"
                 + "VALUES(?,?,?,?,?,?)";
     
@@ -155,7 +156,7 @@ public class PacienteData {
         
         List<Paciente> pacientes = new ArrayList<Paciente>();
         
-        String sql="select dni,apellido,nombre,domicilio,telefono from paciente where estado=1;";
+        String sql="select idPaciente,dni,apellido,nombre,domicilio,telefono from paciente where estado=1;";
         
 //        String [] datos =new String[5];
         
@@ -171,6 +172,7 @@ public class PacienteData {
                 paciente.setNombre(rs.getString("nombre"));
                 paciente.setDomicilio(rs.getString("domicilio"));
                 paciente.setTelefono(rs.getString("telefono"));
+                paciente.setIdPaciente(rs.getInt("idPaciente"));
                 paciente.setEstado(true);
                 
                 pacientes.add(paciente);
@@ -222,56 +224,36 @@ public class PacienteData {
     }
     
     
-//    public void mostrarPacientes(JTable tablaPaciente){
-//        
-//        DefaultTableModel modelo=new DefaultTableModel(){
-//            @Override
-//            public boolean isCellEditable(int i, int i1) {
-//                return false; // 
-//            }
-//        
-//        };
-//        
-//        String sql="";
-//        
-//        modelo.addColumn("id");
-//        modelo.addColumn("dni");
-//        modelo.addColumn("apellido");
-//        modelo.addColumn("nombre");
-//        modelo.addColumn("domicilio");
-//        modelo.addColumn("telefono");
-//        
-//        tablaPaciente.setModel(modelo);
-//        
-//        sql="select * from paciente where estado=1;";
-//        
-//        String [] datos =new String[6];
-//        
-//        try {
-//            ps=con.prepareStatement(sql);
-//            rs=ps.executeQuery();
-//            
-//            while(rs.next()){
-//            datos [0]=rs.getString(1);
-//            datos [1]=rs.getString(2);
-//            datos [2]=rs.getString(3);
-//            datos [3]=rs.getString(4);
-//            datos [4]=rs.getString(5);
-//            datos [5]=rs.getString(6);
-//            
-//            modelo.addRow(datos);
-//            }
-//            
-//            tablaPaciente.setModel(modelo);
-//            
-//            
-//            
-//            
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null,"Error: al acceder a los datos de la base de datos");
-//        }
-//        
-//    }
+    public Paciente buscarPacienteID(int id) {
+        String sql = "select idPaciente,dni,apellido,nombre,domicilio,telefono from paciente where idPaciente=?";
+        
+        Paciente paciente=null;
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                paciente = new Paciente();
+                paciente.setIdPaciente(rs.getInt("idPaciente")); //>>>>se puede cambiar rs.getint por id
+                paciente.setDni(rs.getInt("dni"));
+                paciente.setApellido(rs.getString("apellido"));
+                paciente.setNombre(rs.getString("nombre"));
+                paciente.setDomicilio(rs.getString("domicilio"));
+                paciente.setTelefono(rs.getString("telefono"));
+                paciente.setEstado(true);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Error: El ID del paciente no existe ");
+                return null;
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: al acceder a la tabla alumno");
+        }
+        return paciente;
+    }
     
     
     
